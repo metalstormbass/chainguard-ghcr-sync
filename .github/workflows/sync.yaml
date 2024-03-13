@@ -15,11 +15,12 @@ jobs:
       - uses: chainguard-dev/setup-chainctl@main
         with:
           identity: ${{ secrets.CGIDENTITY }}
+      - uses: imjasonh/setup-crane@v0.3
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_TOKEN }}
      
-      - uses: imjasonh/setup-crane@v0.3
+
       - run: crane copy cgr.dev/chainguard/python:latest ghcr.io/metalstormbass/python:latest  
