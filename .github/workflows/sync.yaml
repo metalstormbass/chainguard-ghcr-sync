@@ -22,5 +22,5 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_TOKEN }}
      
-
-      - run: crane copy cgr.dev/chainguard/python:latest ghcr.io/metalstormbass/python:latest  
+      - run: chainctl images list -o json |jq -r '.[].repo.name'
+      #- run: crane copy cgr.dev/chainguard/python:latest ghcr.io/metalstormbass/python:latest  
