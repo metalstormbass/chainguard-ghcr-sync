@@ -34,5 +34,8 @@ jobs:
           for image in "${IMAGES[@]}"; do
             source_image="cgr.dev/${{ secrets.ORG_NAME }}/${image}"
             target_image="ghcr.io/metalstormbass/${image}"
-            crane copy ${source_image} ${target_image}
+            echo $source_image
+            echo $target_image
+
           done
+        #crane copy ${source_image} ${target_image}
