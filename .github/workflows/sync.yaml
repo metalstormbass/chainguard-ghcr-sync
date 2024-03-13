@@ -1,0 +1,26 @@
+name: Chainguard Registry Example
+
+on:
+  push:
+    branches: ['main']
+
+permissions:
+  contents: read
+  id-token: write  # This is needed for OIDC federation.
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: chainguard-dev/setup-chainctl@main
+        with:
+          identity: ${{ secrets.CGIDENTITY }}
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_TOKEN }}
+     
+      - uses: imjasonh/setup-crane@v0.3
+      - run: | 
+	crane copy cgr.dev/chainguard/python:latest ghcr.io/metalstormbass/python:latest  
