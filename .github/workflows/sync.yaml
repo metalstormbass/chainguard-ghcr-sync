@@ -24,15 +24,15 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
      
      # Get length of array 
-      - run: LENGTH=$(($(chainctl images list -o json | jq '. | length')-1))
+      - run: LENGTH=$(($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq '. | length')-1))
      # Get images names 
-      - run: IMAGES=($(chainctl images list -o json | jq -r '.[] | "\(.repo.name):\(.tags[].name)"'))
+      - run: IMAGES=($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq -r '.[] | "\(.repo.name):\(.tags[].name)"'))
      
     # Copy Images
       - run: |
           
           for image in "${IMAGES[@]}"; do
-            source_image="cgr.dev/${ORG_NAME}/${image}"
+            source_image="cgr.dev/${{ secrets.ORG_NAME }}/${image}"
             target_image="ghcr.io/metalstormbass/${image}"
-            crane copy "$source_image" "$target_image"
+            crane copy ${source_image} ${target_image}
           done
