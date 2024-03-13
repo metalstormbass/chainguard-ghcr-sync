@@ -1,0 +1,1 @@
+# chainguard-ghcr-sync
