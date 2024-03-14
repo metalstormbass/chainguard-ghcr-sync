@@ -27,15 +27,13 @@ jobs:
       - run: LENGTH=$(($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq '. | length')-1))
      # Get images names 
       - run: IMAGES=($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq -r '.[] | "\(.repo.name):\(.tags[].name)"'))
-     
-    # Copy Images
-      - run: |
-          
+     # Copy Images
+      - run: |       
           for image in "${IMAGES[@]}"; do
             source_image="cgr.dev/${{ secrets.ORG_NAME }}/${image}"
             target_image="ghcr.io/metalstormbass/${image}"
             echo $source_image
             echo $target_image
-
+            crane copy ${source_image} ${target_image}
           done
-        #crane copy ${source_image} ${target_image}
+        
