@@ -35,5 +35,6 @@ jobs:
             target_image="ghcr.io/metalstormbass/${image}"
             echo $source_image
             echo $target_image
+            crane copy ${source_image} ${target_image}
           done
-   #crane copy ${source_image} ${target_image}
+   
