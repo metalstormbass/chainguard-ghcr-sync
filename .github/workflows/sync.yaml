@@ -23,15 +23,17 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_TOKEN }}
      
-     # Get length of array 
-      - run: LENGTH=$(($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq '. | length')-1))
-     # Get images names 
-      - run: IMAGES=($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq -r '.[] | "\(.repo.name):\(.tags[].name)"'))
-     # Copy Images
-      - run: |       
+     # Bash
+      - run: | 
+          LENGTH=$(($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq '. | length')-1))
+          IMAGES=($(chainctl images list --parent ${{ secrets.ORG_NAME }} -o json | jq -r '.[] | "\(.repo.name):\(.tags[].name)"'))
+          echo $LENGTH
+          echo $IMAGES
+
           for image in "${IMAGES[@]}"; do
             source_image="cgr.dev/${{ secrets.ORG_NAME }}/${image}"
             target_image="ghcr.io/metalstormbass/${image}"
-            crane copy ${source_image} ${target_image}
+            echo $source_image
+            echo $target_image
           done
-        
+   #crane copy ${source_image} ${target_image}
